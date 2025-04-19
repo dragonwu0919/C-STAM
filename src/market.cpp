@@ -1,4 +1,4 @@
-#include "../include/market.hpp"
+#include <market.hpp>
 #include <random>
 
 
@@ -52,13 +52,19 @@ void market::updateCondition() {
 
     flag |= 0x01 << 10;
     flag |= 0x00 << 11;
+
+    condition = flag;
+}
+
+uint16_t market::getCondition() {
+    return condition;
 }
 
 void market::updatePrice() {
     double price_term = 0.0;
     double dividend_term = 0.0;
     double constant = 0.0;
-    prediction_coeff_t coeff = {0};
+    prediction_coeff_t coeff = {0,0,0};
 
     for (size_t i = 0; i < agents.size(); i++) {
         coeff = agents[i].getPrediction();
@@ -67,9 +73,52 @@ void market::updatePrice() {
         constant += coeff.constant;
     }
 
-    double price = 0.0;
-    price = (stock - dividend_term*dividend.back() - constant) / (price_term);
+    double price_temp = 0.0;
+    price_temp = (stock - dividend_term*dividend.back() - constant) / (price_term);
 
-    this->price.push_back(price);
+    this->price.push_back(price_temp);
 }
 
+void market::updateAgent() {
+    return ;
+}
+
+
+double market::getDividend() {
+    return dividend.back();
+}
+
+double market::getLastDividend() {
+    return *(dividend.end() - 2);
+}
+
+double market::getInterestRate(){
+    return interest_rate;
+}
+
+double market::getPrice(){
+    return price.back();
+}
+
+void market::putDividend(double t){
+    dividend.push_back(t);
+}
+
+void market::putPrice(double t){
+    price.push_back(t);
+}
+
+void market::informAgent() {
+    for (size_t i = 0; i < agents.size(); i++) {
+        agents[i].setValues(price.back(), dividend.back(), price[price.size() - 2], dividend[dividend.size() - 2]);
+        agents[i].setCondition(condition);
+    }
+}
+
+void market::setAgentVariance(size_t index, size_t forecastor_index, double value) {
+    if (index >= agents.size() || forecastor_index >= agents[index].getAmount()) {
+        return; // need to replace with exception later on
+    }
+    
+    agents[index].setVariance(forecastor_index, value);
+}
