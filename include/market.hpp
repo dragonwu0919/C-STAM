@@ -1,4 +1,4 @@
-#include "agent.hpp"
+#include <agent.hpp>
 
 #define PERSISTENCE 0.95f
 #define DIV_AVG 0.0f

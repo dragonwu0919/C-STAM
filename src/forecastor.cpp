@@ -1,4 +1,4 @@
-#include "../include/forecastor.hpp"
+#include <forecastor.hpp>
 
 void forecastor::setValues(int price, int dividend, int last_price, int last_dividend) {
     this->price = price;

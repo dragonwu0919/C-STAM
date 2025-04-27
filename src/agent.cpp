@@ -1,4 +1,4 @@
-#include "../include/agent.hpp"
+#include <agent.hpp>
 
 #include <unordered_map>
 
