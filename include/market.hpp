@@ -1,12 +1,12 @@
 #include <agent.hpp>
 
-#define PERSISTENCE 0.95f
-#define DIV_AVG 0.0f
-#define DIV_VAR 0.0f
-#define INTREST_RATE 0.05f
-#define STOCK 1000.0f
+constexpr double PERSISTENCE = 0.95;
+constexpr double DIV_AVG = 0.0;
+constexpr double DIV_VAR = 0.0;
+constexpr double INTREST_RATE = 0.05;
+constexpr double STOCK = 1000.0;
 
-typedef class market {
+class market {
     std::vector<agent_t> agents;
     std::vector<double> price;
     std::vector<double> dividend;
@@ -34,4 +34,6 @@ public:
         price.push_back(0.0);
         dividend.push_back(dividend_avg);
     }
-} market_t;
+} ;
+
+typedef market market_t;

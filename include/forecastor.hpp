@@ -2,12 +2,11 @@
 #include <cstdint>
 #include <cstddef>
 
-#define ALPHA_INIT 1.0f
-#define BETA_INIT 0.0f
-#define TIME_CONST 75
+constexpr double ALPHA_INIT = 1.0;
+constexpr double BETA_INIT = 0.0;
+constexpr int TIME_CONST = 75;
 
-
-typedef class forecastor {
+class forecastor {
 
 protected:
     std::vector<double> alpha;
@@ -36,4 +35,4 @@ public:
     forecastor(size_t amount) : amount(amount), alpha(amount, ALPHA_INIT), beta(amount, BETA_INIT), variance(amount, 0.0f), condition(amount, 0xFF) 
     {}
 
-} forecastor;
+};

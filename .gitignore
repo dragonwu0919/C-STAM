@@ -1,5 +1,5 @@
 *.o
 
 NSD/
-
 .vscode/
+build/
