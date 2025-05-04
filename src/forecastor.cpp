@@ -66,3 +66,11 @@ void forecastor::updateVariance(size_t index) {
         this->variance[index] = 0.0f;
     }
 }
+
+void forecastor::setVariance(size_t index, double value) {
+    if (index >= this->amount) {
+        return; // need to replace with exception later on
+    }
+    
+    this->variance[index] = value;
+}

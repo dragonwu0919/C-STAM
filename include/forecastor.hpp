@@ -10,14 +10,14 @@ class forecastor {
 
 
 protected:
+    size_t amount;
+    uint16_t ref_condition = 0xFF;
+
     std::vector<double> alpha;
     std::vector<double> beta;
     std::vector<double> variance;
     std::vector<uint16_t> condition;
     std::vector<uint16_t> condition_any;
-    
-    size_t amount;
-    uint16_t ref_condition = 0xFF;
 
     int price = 0;
     int dividend = 0;
@@ -26,9 +26,13 @@ protected:
 
 public:
     void updateVariance(size_t);
-    double getVariance(size_t);
     
     bool verifyConditionMask(size_t);
+
+    // getter and setters
+    double getVariance(size_t);
+    void setVariance(size_t index , double value);
+
     void setCondition(uint16_t condition);
     void setConditionMask(uint16_t condition, size_t index);
     void setConditionMaskAny(uint16_t condition_any, size_t index);
@@ -36,6 +40,7 @@ public:
     size_t getAmount();
     
     void setValues(int price, int dividend, int last_price, int last_dividend);
+
 
     // constructor
     forecastor() = delete;

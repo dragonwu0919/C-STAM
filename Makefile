@@ -14,7 +14,7 @@ WRAPPER_DIR = wrapper
 TEST_DIR = test
 
 
-WRAP_FLAGS = -O3 -Wall -std=c++11 -fPIC
+WRAP_FLAGS = -O3 -Werror -Wall -Wextra -std=c++11 -fPIC
 PYBIND11_INCLUDES = $(shell python3 -m pybind11 --includes)
 LOCAL_INCLUDES = -I$(CPP_DIR) -I$(HPP_DIR) -I$(WRAPPER_DIR)
 
@@ -74,7 +74,7 @@ $(BUILD_DIR)/%_wrapper.o: $(WRAPPER_DIR)/%_wrapper.cpp # for wrapper
 	@$(CXX) -c $(WRAP_FLAGS) $(PYBIND11_INCLUDES) $< -o $@ $(LOCAL_INCLUDES) > /dev/null 2> $(STDERR)
 
 
-test: all 
+test: verbose 
 	@echo "Running tests..."
 	@python3 -m pytest -xvs test/
 
