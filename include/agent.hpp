@@ -17,6 +17,7 @@ private:
     double rate;
 
 public:
+    prediction_coeff_t pred_coeff = {0.0, 0.0, 0.0};    
     size_t chooseForecastor();
     prediction_coeff_t getPrediction();
     void doEvolution();

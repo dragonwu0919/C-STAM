@@ -8,11 +8,13 @@ constexpr int TIME_CONST = 75;
 
 class forecastor {
 
+
 protected:
     std::vector<double> alpha;
     std::vector<double> beta;
     std::vector<double> variance;
     std::vector<uint16_t> condition;
+    std::vector<uint16_t> condition_any;
     
     size_t amount;
     uint16_t ref_condition = 0xFF;
@@ -25,14 +27,19 @@ protected:
 public:
     void updateVariance(size_t);
     double getVariance(size_t);
-    bool verifyCondition(size_t);
+    
+    bool verifyConditionMask(size_t);
     void setCondition(uint16_t condition);
+    void setConditionMask(uint16_t condition, size_t index);
+    void setConditionMaskAny(uint16_t condition_any, size_t index);
+    
     size_t getAmount();
+    
     void setValues(int price, int dividend, int last_price, int last_dividend);
 
     // constructor
     forecastor() = delete;
-    forecastor(size_t amount) : amount(amount), alpha(amount, ALPHA_INIT), beta(amount, BETA_INIT), variance(amount, 0.0f), condition(amount, 0xFF) 
+    forecastor(size_t amount) : amount(amount), alpha(amount, ALPHA_INIT), beta(amount, BETA_INIT), variance(amount, 0.0f), condition(amount, 0xFF), condition_any(amount, 0xFF)
     {}
 
 };

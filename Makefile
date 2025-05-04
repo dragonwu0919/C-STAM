@@ -11,6 +11,7 @@ CPP_DIR = src
 HPP_DIR = include
 BUILD_DIR = build
 WRAPPER_DIR = wrapper
+TEST_DIR = test
 
 
 WRAP_FLAGS = -O3 -Wall -std=c++11 -fPIC
@@ -53,6 +54,13 @@ binary: env $(BINARIES)
 
 clean:
 	@if [ -d $(BUILD_DIR) ]; then rm -rf $(BUILD_DIR); fi
+	@if [ -d $(TEST_DIR)/__pycache__ ]; then rm -rf $(TEST_DIR)/__pycache__; fi
+
+
+# specified target
+$(BUILD_DIR)/agent.so: $(BUILD_DIR)/agent.o $(BUILD_DIR)/agent_wrapper.o $(BUILD_DIR)/forecastor.o
+	@$(CXX) -shared $^ -o $@
+
 
 # 泛化的模式規則，用於生成 .so 文件
 $(BUILD_DIR)/%.so: $(BUILD_DIR)/%.o $(BUILD_DIR)/%_wrapper.o
@@ -64,5 +72,10 @@ $(BUILD_DIR)/%.o: $(CPP_DIR)/%.cpp $(HPP_DIR)/%.hpp
 
 $(BUILD_DIR)/%_wrapper.o: $(WRAPPER_DIR)/%_wrapper.cpp # for wrapper
 	@$(CXX) -c $(WRAP_FLAGS) $(PYBIND11_INCLUDES) $< -o $@ $(LOCAL_INCLUDES) > /dev/null 2> $(STDERR)
+
+
+test: all 
+	@echo "Running tests..."
+	@python3 -m pytest -xvs test/
 
 

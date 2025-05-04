@@ -2,18 +2,34 @@
 
 #include <unordered_map>
 
+#include <stdio.h>
+#include <iostream>
+
 size_t agent_t::chooseForecastor() {
     size_t best_index = 0;
     double best_value = 0.0;
     double value = -1.0;
 
-    for (size_t i = 0; i < getAmount(); ++i) {
-        if (verifyCondition(i)) {
-            if((value == -1.0) || (getVariance(i) < best_value)) {
+    std::cout << "chooseForecastor" << std::endl;
+
+    size_t bound = this->getAmount();
+
+    std::cout << "amount: " << bound << std::endl;
+
+    for (size_t i = 0; i <= bound; i++) {
+        if (i > 100) return 0 ;
+
+        std::cout << "i , before   : " << i << std::endl;
+        std::cout << "amount local : " << bound << std::endl;
+        
+        if (this->verifyConditionMask(i)) {
+            if((value == -1.0) || (this->getVariance(i) < best_value)) {
                 best_index = i;
-                best_value = getVariance(i);
+                best_value = this->getVariance(i);
             }
         }
+
+        std::cout << "i , after    : " << i << std::endl;
     }
 }
 
@@ -32,6 +48,8 @@ prediction_coeff_t agent_t::getPrediction() {
     coeff.price_term = (alpha - 1 - rate) / (risk_aversion * variance);
     coeff.div_term = (alpha) / (risk_aversion * variance);
     coeff.constant = beta;
+
+    pred_coeff = coeff;
 
     return coeff;
 }
