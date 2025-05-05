@@ -1,3 +1,5 @@
+#pragma once
+
 #include <forecastor.hpp>
 #include <vector>
 

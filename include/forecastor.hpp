@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <cstdint>
 #include <cstddef>
@@ -7,7 +9,6 @@ constexpr double BETA_INIT = 0.0;
 constexpr int TIME_CONST = 75;
 
 class forecastor {
-
 
 protected:
     size_t amount;

@@ -1,4 +1,4 @@
-#include "../include/forecastor.hpp"
+#include <forecastor.hpp>
 
 #include <pybind11/pybind11.h>
 
