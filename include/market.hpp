@@ -1,3 +1,5 @@
+#pragma once
+
 #include <agent.hpp>
 
 constexpr double PERSISTENCE = 0.95;

@@ -58,7 +58,7 @@ void market::updatePrice() {
     double price_term = 0.0;
     double dividend_term = 0.0;
     double constant = 0.0;
-    prediction_coeff_t coeff = {0};
+    prediction_coeff_t coeff = {0,0,0};
 
     for (size_t i = 0; i < agents.size(); i++) {
         coeff = agents[i].getPrediction();
