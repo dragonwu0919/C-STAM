@@ -52,13 +52,19 @@ void market::updateCondition() {
 
     flag |= 0x01 << 10;
     flag |= 0x00 << 11;
+
+    condition = flag;
+}
+
+uint16_t market::getCondition() {
+    return condition;
 }
 
 void market::updatePrice() {
     double price_term = 0.0;
     double dividend_term = 0.0;
     double constant = 0.0;
-    prediction_coeff_t coeff = {0};
+    prediction_coeff_t coeff = {0,0,0};
 
     for (size_t i = 0; i < agents.size(); i++) {
         coeff = agents[i].getPrediction();
@@ -73,3 +79,31 @@ void market::updatePrice() {
     this->price.push_back(price);
 }
 
+void market::updateAgent() {
+    return ;
+}
+
+
+double market::getDividend() {
+    return dividend.back();
+}
+
+double market::getLastDividend() {
+    return *(dividend.end() - 2);
+}
+
+double market::getInterestRate(){
+    return interest_rate;
+}
+
+double market::getPrice(){
+    return price.back();
+}
+
+void market::putDividend(double t){
+    dividend.push_back(t);
+}
+
+void market::putPrice(double t){
+    price.push_back(t);
+}
