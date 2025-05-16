@@ -62,6 +62,10 @@ $(BUILD_DIR)/agent.so: $(BUILD_DIR)/agent.o $(BUILD_DIR)/agent_wrapper.o $(BUILD
 	@$(CXX) -shared $^ -o $@
 
 
+$(BUILD_DIR)/market.so: $(BUILD_DIR)/agent.o $(BUILD_DIR)/market_wrapper.o $(BUILD_DIR)/market.o $(BUILD_DIR)/forecastor.o
+	@$(CXX) -shared $^ -o $@
+
+
 # 泛化的模式規則，用於生成 .so 文件
 $(BUILD_DIR)/%.so: $(BUILD_DIR)/%.o $(BUILD_DIR)/%_wrapper.o
 	@$(CXX) -shared $^ -o $@
@@ -77,5 +81,4 @@ $(BUILD_DIR)/%_wrapper.o: $(WRAPPER_DIR)/%_wrapper.cpp # for wrapper
 test: verbose 
 	@echo "Running tests..."
 	@python3 -m pytest -xvs test/
-
 
