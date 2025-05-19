@@ -1,6 +1,6 @@
 #include <forecastor.hpp>
 
-void forecastor::setValues(int price, int dividend, int last_price, int last_dividend) {
+void forecastor::setValues(double price, double dividend, double last_price, double last_dividend) {
     this->price = price;
     this->dividend = dividend;
     this->last_price = last_price;
@@ -11,18 +11,43 @@ void forecastor::setCondition(uint16_t condition) {
     this->ref_condition = condition;
 }
 
+void forecastor::setConditionMaskAny(uint16_t condition_any, size_t index) {
+    if (index >= this->amount) {
+        return; // need to replace with exception later on
+    }
+    
+    this->condition_any[index] = condition_any;
+}
+
+void forecastor::setConditionMask(uint16_t condition, size_t index) {
+    if (index >= this->amount) {
+        return; // need to replace with exception later on
+    }
+    
+    this->condition[index] = condition;
+}
 
 size_t forecastor::getAmount() {
     return this->amount;
 }
 
 double forecastor::getVariance(size_t index) {
+    if (index >= this->amount) {
+        return -1 ; // need to replace with exception later on
+    }
+    
     return this->variance[index];
 }
 
 
-bool forecastor::verifyCondition(size_t index) {
-    return (this->condition[index] & this->ref_condition) == this->ref_condition;
+bool forecastor::verifyConditionMask(size_t index) {
+    static uint16_t filtered_ref = 0;
+    static uint16_t filtered_condition = 0;
+
+    filtered_ref = this->ref_condition & ~(this->condition_any[index]);
+    filtered_condition = this->condition[index] & ~(this->condition_any[index]);
+
+    return (filtered_ref == filtered_condition);
 }
 
 void forecastor::updateVariance(size_t index) {
@@ -40,4 +65,25 @@ void forecastor::updateVariance(size_t index) {
     if (this->variance[index] < 0.0f) {
         this->variance[index] = 0.0f;
     }
+}
+
+void forecastor::setVariance(size_t index, double value) {
+    if (index >= this->amount) {
+        return; // need to replace with exception later on
+    }
+    
+    this->variance[index] = value;
+}
+
+void forecastor::setPrice(double price) {
+    this->price = price;
+}
+void forecastor::setLastPrice(double last_price) {
+    this->last_price = last_price;
+}  
+void forecastor::setDividend(double dividend) {
+    this->dividend = dividend;
+}
+void forecastor::setLastDividend(double last_dividend) {
+    this->last_dividend = last_dividend;
 }

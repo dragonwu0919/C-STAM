@@ -2,4 +2,7 @@
 
 NSD/
 .vscode/
+
 build/
+.pytest_cache/
+test/__pycache__/
