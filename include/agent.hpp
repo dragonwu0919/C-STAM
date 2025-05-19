@@ -30,5 +30,3 @@ public:
     }
 
 };
-
-typedef agent agent_t;
