@@ -63,5 +63,3 @@ public:
         }
     }
 } ;
-
-typedef market market_t;

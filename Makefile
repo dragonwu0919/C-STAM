@@ -1,6 +1,7 @@
 VERBOSE ?= 0
 DEBUG ?= 0
 
+
 STDERR = /dev/null
 ifeq ($(VERBOSE), 1)
     STDERR = /dev/stderr
@@ -32,8 +33,10 @@ all: binary
 verbose:
 	$(MAKE) VERBOSE=1 
 
+
 debug:
 	$(MAKE) DEBUG=1 VERBOSE=1
+
 
 env:
 	@if [ ! -d $(BUILD_DIR) ]; then mkdir $(BUILD_DIR); fi
