@@ -1,10 +1,20 @@
 #include <forecastor.hpp>
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/stl_bind.h>
 
 namespace py = pybind11;
 
+PYBIND11_MAKE_OPAQUE(std::vector<double>);
+PYBIND11_MAKE_OPAQUE(std::vector<uint16_t>);
+
+
 PYBIND11_MODULE(forecastor, m) {
+     pybind11::bind_vector<std::vector<double>>(m, "VectorDouble");
+     pybind11::bind_vector<std::vector<uint16_t>>(m, "VectorUInt16");
+
+
      py::class_<forecastor>(m, "forecastor")
      .def(py::init<size_t>(), "Initialize forecastor with a specific amount of forecastors", 
           py::arg("amount"))

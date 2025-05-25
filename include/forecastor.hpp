@@ -48,7 +48,7 @@ public:
 
     // constructor
     forecastor() = delete;
-    forecastor(size_t amount) : amount(amount), alpha(amount, ALPHA_INIT), beta(amount, BETA_INIT), variance(amount, 0.0f), condition(amount, 0xFF), condition_any(amount, 0xFF)
+    forecastor(size_t amount) : amount(amount), alpha(amount, ALPHA_INIT), beta(amount, BETA_INIT), variance(amount, 1.0f), condition(amount, 0xFF), condition_any(amount, 0xFF)
     {}
 
 };

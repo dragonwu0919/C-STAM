@@ -1,5 +1,6 @@
 #include <agent.hpp>
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 namespace py = pybind11;
 
@@ -10,7 +11,8 @@ PYBIND11_MODULE(agent, m) {
         .def(py::init<size_t, double>())  // 綁定構造函數
         .def("chooseForecastor", &agent_t::chooseForecastor)
         .def("getPrediction", &agent_t::getPrediction) 
-        .def("doEvolution", &agent_t::doEvolution)
+        .def("mutate", &agent_t::doMutation)
+        .def("crossover", &agent_t::doCrossover)
         .def("setVariance", &agent_t::setVariance)
         .def_property("amount",
             [](agent_t &self) { return self.getAmount(); }, [](){});

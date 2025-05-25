@@ -31,13 +31,13 @@ def test_init():
     assert tar.getAmount() == 10
 
     for i in range(10):
-        assert tar.getVariance(i) == pytest.approx(0.0, rel=0.01)
+        assert tar.getVariance(i) == pytest.approx(1.0, rel=0.01)
 
 def test_variance():
     [tar, values] = get_forecastor()
 
     for i in range(10):
-        assert tar.getVariance(i) == pytest.approx(0.0, rel=0.01)
+        assert tar.getVariance(i) == pytest.approx(1.0, rel=0.01)
 
     for i in range(10):
         ref = update_variance(tar, i, values[0], values[1], values[2], values[3])
