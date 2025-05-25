@@ -10,7 +10,7 @@ constexpr int TIME_CONST = 75;
 
 class forecastor {
 
-protected:
+public:
     size_t amount;
     uint16_t ref_condition = 0xFF;
 
@@ -25,7 +25,6 @@ protected:
     double last_price = 0;
     double last_dividend = 0;
 
-public:
     void updateVariance(size_t);
     
     bool verifyConditionMask(size_t);

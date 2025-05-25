@@ -12,7 +12,7 @@ PYBIND11_MODULE(agent, m) {
         .def("getPrediction", &agent_t::getPrediction) 
         .def("doEvolution", &agent_t::doEvolution)
         .def("setVariance", &agent_t::setVariance)
-        .def_property("Amount",
+        .def_property("amount",
             [](agent_t &self) { return self.getAmount(); }, [](){});
 
 
