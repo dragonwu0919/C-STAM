@@ -22,7 +22,17 @@ PYBIND11_MODULE(agent, m) {
             py::arg("price"), py::arg("dividend"),
             py::arg("last_price"), py::arg("last_dividend"))
         .def("updateVariance", &agent_t::updateVariance,
-            py::arg("index"));
+            py::arg("index"))
+        .def_readwrite("wealth", &agent_t::wealth)
+        .def("calculateWealth", &agent_t::calculateWealth,
+            py::arg("rate"), py::arg("saving"), py::arg("stock_hold"),
+            py::arg("price"), py::arg("dividend"))
+        .def("updateWealth", &agent_t::updateWealth)
+        .def_readonly("saving", &agent_t::saving, "Initial saving amount")
+        .def_readwrite("wealth", &agent_t::wealth, "Current wealth of the agent")
+        .def_readwrite("stock_hold", &agent_t::stock_hold, "Amount of stock held by the agent")
+        .def_readonly("rate", &agent_t::rate, "Interest rate of the agent");
+
         
 
 

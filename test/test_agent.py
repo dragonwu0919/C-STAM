@@ -15,7 +15,13 @@ def reference():
     
     return tar, coeff
 
+def random_value():
+    price = random.uniform(0.0, 100.0)
+    div = random.uniform(0.0, 100.0)
+    last_price = random.uniform(0.0, 100.0)
+    last_div = random.uniform(0.0, 100.0)
 
+    return price, div, last_price, last_div
 
 
 def test_module_availability():
@@ -135,3 +141,24 @@ def test_prediction():
     assert coeff.price_term == pytest.approx(ref.price_term, rel=0.01)
     assert coeff.div_term == pytest.approx(ref.div_term, rel=0.01)
     assert coeff.constant == pytest.approx(ref.constant, rel=0.01)
+
+def test_wealth():
+    
+    def wealth(rate, saving, hold, price, div):
+        return (1 +rate) * saving + hold * (price + div)
+    
+    tar, coeff = reference()
+
+    s = tar.saving
+    h = tar.stock_hold
+    r = tar.rate
+
+    for i in range(10):
+        price, div, last_price, last_div = random_value()
+        tar.setValues(price, div, last_price, last_div)
+
+        ref_wealth = wealth(r, s, h, price, div)
+
+        tar.updateWealth()
+
+        assert tar.wealth == pytest.approx(ref_wealth, rel=0.01)
