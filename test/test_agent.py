@@ -1,6 +1,7 @@
 import pytest
 from build import forecastor as f
 from build import agent as a
+import random
 
 def reference():
     tar = a.agent(10,0.1)
@@ -10,14 +11,44 @@ def reference():
         tar.setVariance(i, 1)
 
     value = [100, 10, 110, 12]
-    tar.forecastor.setValues(value[0], value[1], value[2], value[3])
+    tar.setValues(value[0], value[1], value[2], value[3])
     
     return tar, coeff
+
+
 
 
 def test_module_availability():
     tar = a.agent(10,0.1)
     assert True == True
+
+def test_variance(): # not yet complete
+
+    amount = 10
+    rate = 0.1
+    tar = a.agent(amount, rate)
+
+    for i in range(amount):
+        ref_var= tar.forecastor.variance[i]
+        alpha = tar.forecastor.alpha[i]
+        beta = tar.forecastor.beta[i]
+        tau = 75
+
+        
+        price = random.uniform(0.0, 100.0)
+        div = random.uniform(0.0, 100.0)
+        last_price = random.uniform(0.0, 100.0)
+        last_div = random.uniform(0.0, 100.0)
+        
+        tar.setValues(price, div, last_price, last_div)
+        tar_var = tar.updateVariance(i)
+
+        error = (price + div) - (alpha*(last_div+last_price) + beta)
+        error = error * error
+        error = error / (tau)
+        ref_var = ref_var * (1 - 1.0/tau) + error
+
+        assert tar_var == pytest.approx(ref_var, rel=0.01)
 
 def test_chooseForecater():
     tar, coeff = reference()

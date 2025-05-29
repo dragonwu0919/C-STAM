@@ -10,7 +10,7 @@ def reference():
     coeff = a.prediction_coeff_t()
 
     value = [100, 10, 110, 12]
-    tar.forecastor.setValues(value[0], value[1], value[2], value[3])
+    tar.setValues(value[0], value[1], value[2], value[3])
     
     return tar, coeff
 
