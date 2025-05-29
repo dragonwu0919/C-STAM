@@ -17,7 +17,10 @@ PYBIND11_MODULE(agent, m) {
         .def_property("amount",
             [](agent_t &self) { return self.fset.getAmount(); }, [](){})
         .def_property_readonly("forecastor", [](agent & self)-> forecastor&
-            { return self.fset;}, py::return_value_policy::reference_internal);
+            { return self.fset;}, py::return_value_policy::reference_internal)
+        .def("setValues", &agent_t::setValues,
+            py::arg("price"), py::arg("dividend"),
+            py::arg("last_price"), py::arg("last_dividend"));
 
 
     // 綁定 prediction_coeff_t 結構
