@@ -6,7 +6,6 @@
 
 constexpr double ALPHA_INIT = 1.0;
 constexpr double BETA_INIT = 0.0;
-constexpr int TIME_CONST = 75;
 
 class forecastor {
 
@@ -19,13 +18,6 @@ public:
     std::vector<double> variance;
     std::vector<uint16_t> condition;
     std::vector<uint16_t> condition_any;
-
-    double price = 0;
-    double dividend = 0;
-    double last_price = 0;
-    double last_dividend = 0;
-
-    void updateVariance(size_t);
     
     bool verifyConditionMask(size_t);
 
@@ -38,13 +30,6 @@ public:
     void setConditionMaskAny(uint16_t condition_any, size_t index);
     
     size_t getAmount();
-    
-    void setValues(double price, double dividend, double last_price, double last_dividend);
-    void setPrice(double);
-    void setLastPrice(double);
-    void setDividend(double);
-    void setLastDividend(double);
-
 
     // constructor
     forecastor() = delete;

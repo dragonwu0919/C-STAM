@@ -110,7 +110,7 @@ void market::putPrice(double t){
 
 void market::informAgent() {
     for (size_t i = 0; i < agents.size(); i++) {
-        agents[i].fset.setValues(price.back(), dividend.back(), price[price.size() - 2], dividend[dividend.size() - 2]);
+        agents[i].setValues(price.back(), dividend.back(), price[price.size() - 2], dividend[dividend.size() - 2]);
         agents[i].fset.setCondition(condition);
     }
 }

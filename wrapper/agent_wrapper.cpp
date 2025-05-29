@@ -20,7 +20,10 @@ PYBIND11_MODULE(agent, m) {
             { return self.fset;}, py::return_value_policy::reference_internal)
         .def("setValues", &agent_t::setValues,
             py::arg("price"), py::arg("dividend"),
-            py::arg("last_price"), py::arg("last_dividend"));
+            py::arg("last_price"), py::arg("last_dividend"))
+        .def("updateVariance", &agent_t::updateVariance,
+            py::arg("index"));
+        
 
 
     // 綁定 prediction_coeff_t 結構
