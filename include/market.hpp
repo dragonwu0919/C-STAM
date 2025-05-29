@@ -62,4 +62,6 @@ public:
             agents[i].setCondition(condition);
         }
     }
-} ;
+};
+
+typedef market market_t;

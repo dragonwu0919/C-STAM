@@ -22,7 +22,8 @@ public:
     prediction_coeff_t pred_coeff = {0.0, 0.0, 0.0};    
     size_t chooseForecastor();
     prediction_coeff_t getPrediction();
-    void doEvolution();
+    void doMutation(double replace_ratio, double mutation_ratio);
+    void doCrossover(double replace_ratio, double crossover_ratio);
 
     //constructor
     agent() = delete;
@@ -31,3 +32,4 @@ public:
 
 };
 
+typedef agent agent_t;

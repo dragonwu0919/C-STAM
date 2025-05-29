@@ -10,7 +10,7 @@ constexpr int TIME_CONST = 75;
 
 class forecastor {
 
-protected:
+public:
     size_t amount;
     uint16_t ref_condition = 0xFF;
 
@@ -25,7 +25,6 @@ protected:
     double last_price = 0;
     double last_dividend = 0;
 
-public:
     void updateVariance(size_t);
     
     bool verifyConditionMask(size_t);
@@ -49,7 +48,7 @@ public:
 
     // constructor
     forecastor() = delete;
-    forecastor(size_t amount) : amount(amount), alpha(amount, ALPHA_INIT), beta(amount, BETA_INIT), variance(amount, 0.0f), condition(amount, 0xFF), condition_any(amount, 0xFF)
+    forecastor(size_t amount) : amount(amount), alpha(amount, ALPHA_INIT), beta(amount, BETA_INIT), variance(amount, 1.0f), condition(amount, 0xFF), condition_any(amount, 0xFF)
     {}
 
 };
