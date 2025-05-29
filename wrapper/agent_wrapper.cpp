@@ -7,15 +7,17 @@ namespace py = pybind11;
 PYBIND11_MODULE(agent, m) {
 
     // 綁定 agent 類
-    py::class_<agent_t, forecastor>(m, "agent")
+    py::class_<agent_t>(m, "agent")
         .def(py::init<size_t, double>())  // 綁定構造函數
         .def("chooseForecastor", &agent_t::chooseForecastor)
         .def("getPrediction", &agent_t::getPrediction) 
         .def("mutate", &agent_t::doMutation)
         .def("crossover", &agent_t::doCrossover)
-        .def("setVariance", &agent_t::setVariance)
+        .def("setVariance", [](agent &self, size_t index, double value){ self.fset.setVariance(index, value);})
         .def_property("amount",
-            [](agent_t &self) { return self.getAmount(); }, [](){});
+            [](agent_t &self) { return self.fset.getAmount(); }, [](){})
+        .def_property_readonly("forecastor", [](agent & self)-> forecastor&
+            { return self.fset;}, py::return_value_policy::reference_internal);
 
 
     // 綁定 prediction_coeff_t 結構

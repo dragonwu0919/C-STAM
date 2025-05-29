@@ -10,7 +10,7 @@ def reference():
         tar.setVariance(i, 1)
 
     value = [100, 10, 110, 12]
-    tar.setValues(value[0], value[1], value[2], value[3])
+    tar.forecastor.setValues(value[0], value[1], value[2], value[3])
     
     return tar, coeff
 
@@ -34,26 +34,27 @@ def test_chooseForecater():
     # manipulate condition
     tar, coeff = reference()
 
-    tar.setCondition(0xff)
+    tar.forecastor.setCondition(0xff)
 
     for i in range(10):
-        tar.setConditionMaskAny(0x00, i)
-        tar.setConditionMask(0x00, i)
+        tar.forecastor.setConditionMaskAny(0x00, i)
+        tar.forecastor.condition_any[i] = 0x00
+        tar.forecastor.setConditionMask(0x00, i)
 
-    tar.setConditionMask(0xff, target)
+    tar.forecastor.setConditionMask(0xff, target)
 
     assert tar.chooseForecastor() == target
 
     # manipulate both condition and variance
     tar, coeff = reference()
 
-    tar.setCondition(0xff)
+    tar.forecastor.setCondition(0xff)
 
     for i in range(10):
-        tar.setConditionMaskAny(0x0F, i)
+        tar.forecastor.setConditionMaskAny(0x0F, i)
 
     for i in range(3, 8):
-        tar.setConditionMask(0xF0, i)
+        tar.forecastor.setConditionMask(0xF0, i)
 
     tar.setVariance(target, 0.1)
 
@@ -82,13 +83,13 @@ def test_prediction():
     rate = 0.1
     risk_aversion = 0.5
 
-    tar.setCondition(0xff)
+    tar.forecastor.setCondition(0xff)
 
     for i in range(10):
-        tar.setConditionMaskAny(0x0F, i)
+        tar.forecastor.setConditionMaskAny(0x0F, i)
 
     for i in range(3, 8):
-        tar.setConditionMask(0xF0, i)
+        tar.forecastor.setConditionMask(0xF0, i)
 
     tar.setVariance(target, variance)
 

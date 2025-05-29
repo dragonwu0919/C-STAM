@@ -92,7 +92,7 @@ def test_updatePrice():
     ref_price = (stock - div_term * div - constant) / (price_term)
     
     tar.updatePrice()
-    print(tar.agents[0].getAmount())
+    print(tar.agents[0].amount)
     price = tar.getPrice()
 
     assert price == pytest.approx(ref_price, rel=0.01)

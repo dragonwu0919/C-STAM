@@ -11,14 +11,15 @@ struct prediction_coeff_t {
     double constant;
 } ;
 
-class agent: public forecastor {
+class agent{
 // agent is a class that inherits from forecastor
 // It is used to manage the agent's state and actions
-private: 
+public: 
+    forecastor fset; // the forecastor used by the agent
+
     double risk_aversion = RISK_AVERSION;
     double rate;
 
-public:
     prediction_coeff_t pred_coeff = {0.0, 0.0, 0.0};    
     size_t chooseForecastor();
     prediction_coeff_t getPrediction();
@@ -27,7 +28,7 @@ public:
 
     //constructor
     agent() = delete;
-    agent(size_t amount, double rate) : forecastor(amount), rate(rate){
+    agent(size_t amount, double rate) : fset(amount), rate(rate){
     }
 
 };
