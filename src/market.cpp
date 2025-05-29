@@ -110,15 +110,15 @@ void market::putPrice(double t){
 
 void market::informAgent() {
     for (size_t i = 0; i < agents.size(); i++) {
-        agents[i].setValues(price.back(), dividend.back(), price[price.size() - 2], dividend[dividend.size() - 2]);
-        agents[i].setCondition(condition);
+        agents[i].fset.setValues(price.back(), dividend.back(), price[price.size() - 2], dividend[dividend.size() - 2]);
+        agents[i].fset.setCondition(condition);
     }
 }
 
 void market::setAgentVariance(size_t index, size_t forecastor_index, double value) {
-    if (index >= agents.size() || forecastor_index >= agents[index].getAmount()) {
+    if (index >= agents.size() || forecastor_index >= agents[index].fset.getAmount()) {
         return; // need to replace with exception later on
     }
     
-    agents[index].setVariance(forecastor_index, value);
+    agents[index].fset.setVariance(forecastor_index, value);
 }

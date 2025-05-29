@@ -40,6 +40,8 @@ PYBIND11_MODULE(forecastor, m) {
      .def_readwrite("alpha", &forecastor::alpha)
      .def_readwrite("beta", &forecastor::beta)
      .def_readwrite("variance", &forecastor::variance)
+     .def_readwrite("ref_condition", &forecastor::ref_condition, "Reference condition for the forecastor")
      .def_readwrite("condition", &forecastor::condition)
-     .def_readwrite("condition_any", &forecastor::condition_any);
+     .def_readwrite("condition_any", &forecastor::condition_any)
+     .def_readwrite("amount", &forecastor::amount, "Amount of forecastors in the forecastor set");
 }

@@ -11,12 +11,12 @@ void forecastor::setCondition(uint16_t condition) {
     this->ref_condition = condition;
 }
 
-void forecastor::setConditionMaskAny(uint16_t condition_any, size_t index) {
+void forecastor::setConditionMaskAny(uint16_t mask, size_t index) {
     if (index >= this->amount) {
         return; // need to replace with exception later on
     }
     
-    this->condition_any[index] = condition_any;
+    this->condition_any[index] = mask;
 }
 
 void forecastor::setConditionMask(uint16_t condition, size_t index) {

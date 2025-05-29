@@ -10,15 +10,13 @@
 size_t agent_t::chooseForecastor() {
     size_t best_index = 0;
     double best_value = -1.0;
-    size_t bound = this->getAmount();
-
+    size_t bound = this->fset.getAmount();
 
     for (size_t i = 0; i < bound; i++) {
-        
-        if (this->verifyConditionMask(i)) {
-            if((best_value == -1.0) || (this->getVariance(i) < best_value)) {
+        if (this->fset.verifyConditionMask(i)) {
+            if ((best_value == -1.0) || (this->fset.getVariance(i) < best_value)) {
                 best_index = i;
-                best_value = this->getVariance(i);
+                best_value = this->fset.getVariance(i);
             }
         }
     }
@@ -34,9 +32,9 @@ prediction_coeff_t agent_t::getPrediction() {
     static double variance = 0; 
 
     index = chooseForecastor();
-    alpha = this->alpha[index];
-    beta = this->beta[index];
-    variance = this->variance[index];
+    alpha = this->fset.alpha[index];
+    beta = this->fset.beta[index];
+    variance = this->fset.variance[index];
 
     coeff.price_term = (alpha - 1 - rate) / (risk_aversion * variance);
     coeff.div_term = (alpha) / (risk_aversion * variance);
@@ -54,17 +52,17 @@ void agent_t::doMutation(double replace_ratio, double mutation_ratio) {
 
     constexpr double mutaion_magnitude = 0.1;
     
-    size_t elected_amount = this->getAmount() * replace_ratio / 1;
-    size_t replace_amount = this->getAmount() * replace_ratio / 1;
+    size_t elected_amount = this->fset.getAmount() * replace_ratio / 1;
+    size_t replace_amount = this->fset.getAmount() * replace_ratio / 1;
 
     std::vector<std::pair<double, size_t>> value_index;
     std::vector<std::pair<double, size_t>> best_forecastors;
     
-    value_index.reserve(this->getAmount());
+    value_index.reserve(this->fset.getAmount());
     best_forecastors.reserve(elected_amount);
 
-    for (size_t i = 0; i < this->getAmount(); i++) {
-        value_index.emplace_back(this->getVariance(i), i);
+    for (size_t i = 0; i < this->fset.getAmount(); i++) {
+        value_index.emplace_back(this->fset.getVariance(i), i);
     }
 
     std::sort(value_index.begin(), value_index.end());
@@ -92,11 +90,11 @@ void agent_t::doMutation(double replace_ratio, double mutation_ratio) {
 
     for(auto & pair : best_forecastors) {
         size_t index = pair.second;
-        alpha_params.push_back(this->alpha[index]);
-        beta_params.push_back(this->beta[index]);
-        condition_params.push_back(this->condition[index]);
-        condition_mask_params.push_back(this->condition_any[index]);
-        variance_params.push_back(this->variance[index]);
+        alpha_params.push_back(this->fset.alpha[index]);
+        beta_params.push_back(this->fset.beta[index]);
+        condition_params.push_back(this->fset.condition[index]);
+        condition_mask_params.push_back(this->fset.condition_any[index]);
+        variance_params.push_back(this->fset.variance[index]);
     }
     
     // do mutation on the parameters
@@ -114,15 +112,14 @@ void agent_t::doMutation(double replace_ratio, double mutation_ratio) {
     }
     
     // replace the worst forecastors with the new ones
-
     for (size_t i = 0; i < replace_amount; i++) {
         size_t worst_index = value_index[value_index.size() - 1 - i].second;
 
-        this->alpha[worst_index] = alpha_params[i];
-        this->beta[worst_index] = beta_params[i];
-        this->condition[worst_index] = condition_params[i];
-        this->condition_any[worst_index] = condition_mask_params[i];
-        this->variance[worst_index] = variance_params[i];
+        this->fset.alpha[worst_index] = alpha_params[i];
+        this->fset.beta[worst_index] = beta_params[i];
+        this->fset.condition[worst_index] = condition_params[i];
+        this->fset.condition_any[worst_index] = condition_mask_params[i];
+        this->fset.variance[worst_index] = variance_params[i];
     }
     
 }
@@ -135,17 +132,17 @@ void agent_t::doCrossover(double replace_ratio, double crossover_ratio) {
     if(replace_ratio >= 1.0) replace_ratio = 1.0;
     if(crossover_ratio >= 1.0) crossover_ratio = 1.0;
 
-    size_t elected_amount = this->getAmount() * replace_ratio / 1;
-    size_t replace_amount = this->getAmount() * replace_ratio / 1;
+    size_t elected_amount = this->fset.getAmount() * replace_ratio / 1;
+    size_t replace_amount = this->fset.getAmount() * replace_ratio / 1;
 
     std::vector<std::pair<double, size_t>> value_index;
     std::vector<std::pair<double, size_t>> best_forecastors;
     
-    value_index.reserve(this->getAmount());
+    value_index.reserve(this->fset.getAmount());
     best_forecastors.reserve(elected_amount);
 
-    for (size_t i = 0; i < this->getAmount(); i++) {
-        value_index.emplace_back(this->getVariance(i), i);
+    for (size_t i = 0; i < this->fset.getAmount(); i++) {
+        value_index.emplace_back(this->fset.getVariance(i), i);
     }
 
     std::sort(value_index.begin(), value_index.end());
@@ -172,11 +169,11 @@ void agent_t::doCrossover(double replace_ratio, double crossover_ratio) {
 
     for(auto & pair : best_forecastors) {
         size_t index = pair.second;
-        alpha_params.push_back(this->alpha[index]);
-        beta_params.push_back(this->beta[index]);
-        condition_params.push_back(this->condition[index]);
-        condition_mask_params.push_back(this->condition_any[index]);
-        variance_params.push_back(this->variance[index]);
+        alpha_params.push_back(this->fset.alpha[index]);
+        beta_params.push_back(this->fset.beta[index]);
+        condition_params.push_back(this->fset.condition[index]);
+        condition_mask_params.push_back(this->fset.condition_any[index]);
+        variance_params.push_back(this->fset.variance[index]);
     }
     
     // do crossover
@@ -215,10 +212,10 @@ void agent_t::doCrossover(double replace_ratio, double crossover_ratio) {
     for (size_t i = 0; i < replace_amount; i++) {
         size_t worst_index = value_index[value_index.size() - 1 - i].second;
 
-        this->alpha[worst_index] = alpha_params[i];
-        this->beta[worst_index] = beta_params[i];
-        this->condition[worst_index] = condition_params[i];
-        this->condition_any[worst_index] = condition_mask_params[i];
-        this->variance[worst_index] = variance_params[i];
+        this->fset.alpha[worst_index] = alpha_params[i];
+        this->fset.beta[worst_index] = beta_params[i];
+        this->fset.condition[worst_index] = condition_params[i];
+        this->fset.condition_any[worst_index] = condition_mask_params[i];
+        this->fset.variance[worst_index] = variance_params[i];
     }
 }
