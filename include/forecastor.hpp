@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cstddef>
 
-constexpr double ALPHA_INIT = 1.0;
+constexpr double ALPHA_INIT = 10.0;
 constexpr double BETA_INIT = 0.0;
 
 class forecastor {

@@ -80,6 +80,10 @@ void market::updatePrice() {
 }
 
 void market::updateAgent() {
+    for(size_t i = 0; i < agents.size(); i++) {
+        agents[i].doMutation(0.2, 1.0);
+        agents[i].doCrossover(0.2, 1.0);
+    }
     return ;
 }
 
@@ -121,4 +125,20 @@ void market::setAgentVariance(size_t index, size_t forecastor_index, double valu
     }
     
     agents[index].fset.setVariance(forecastor_index, value);
+}
+
+
+void market::forward() {
+    updateCondition();
+    informAgent();
+    updatePrice();
+    updateDividend();
+    informAgent();
+
+    for (size_t i = 0; i < agents.size(); i++) {
+        agents[i].updateVariance(agents[i].chooseForecastor());
+        agents[i].updateWealth();
+    }
+
+    updateAgent();
 }

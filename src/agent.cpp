@@ -52,14 +52,15 @@ void agent_t::doMutation(double replace_ratio, double mutation_ratio) {
 
     constexpr double mutaion_magnitude = 0.1;
     
-    size_t elected_amount = this->fset.getAmount() * replace_ratio / 1;
     size_t replace_amount = this->fset.getAmount() * replace_ratio / 1;
+
+    if (replace_amount <= 0 ) return;
 
     std::vector<std::pair<double, size_t>> value_index;
     std::vector<std::pair<double, size_t>> best_forecastors;
     
     value_index.reserve(this->fset.getAmount());
-    best_forecastors.reserve(elected_amount);
+    best_forecastors.reserve(replace_amount);
 
     for (size_t i = 0; i < this->fset.getAmount(); i++) {
         value_index.emplace_back(this->fset.getVariance(i), i);
@@ -69,7 +70,7 @@ void agent_t::doMutation(double replace_ratio, double mutation_ratio) {
 
     for(auto & pair : value_index) {
         best_forecastors.emplace_back(pair);
-        if (best_forecastors.size() >= elected_amount) {
+        if (best_forecastors.size() >= replace_amount) {
             break;
         }
     }
@@ -82,11 +83,11 @@ void agent_t::doMutation(double replace_ratio, double mutation_ratio) {
     std::vector<uint16_t> condition_mask_params;
     std::vector<double> variance_params;
 
-    alpha_params.reserve(elected_amount);
-    beta_params.reserve(elected_amount);
-    condition_params.reserve(elected_amount);
-    condition_mask_params.reserve(elected_amount);
-    variance_params.reserve(elected_amount);
+    alpha_params.reserve(replace_amount);
+    beta_params.reserve(replace_amount);
+    condition_params.reserve(replace_amount);
+    condition_mask_params.reserve(replace_amount);
+    variance_params.reserve(replace_amount);
 
     for(auto & pair : best_forecastors) {
         size_t index = pair.second;
@@ -132,14 +133,17 @@ void agent_t::doCrossover(double replace_ratio, double crossover_ratio) {
     if(replace_ratio >= 1.0) replace_ratio = 1.0;
     if(crossover_ratio >= 1.0) crossover_ratio = 1.0;
 
-    size_t elected_amount = this->fset.getAmount() * replace_ratio / 1;
     size_t replace_amount = this->fset.getAmount() * replace_ratio / 1;
+
+    if (replace_amount < 2) {
+        return; // not enough forecastors to do crossover
+    }
 
     std::vector<std::pair<double, size_t>> value_index;
     std::vector<std::pair<double, size_t>> best_forecastors;
     
     value_index.reserve(this->fset.getAmount());
-    best_forecastors.reserve(elected_amount);
+    best_forecastors.reserve(replace_amount);
 
     for (size_t i = 0; i < this->fset.getAmount(); i++) {
         value_index.emplace_back(this->fset.getVariance(i), i);
@@ -149,7 +153,7 @@ void agent_t::doCrossover(double replace_ratio, double crossover_ratio) {
 
     for(auto & pair : value_index) {
         best_forecastors.emplace_back(pair);
-        if (best_forecastors.size() >= elected_amount) {
+        if (best_forecastors.size() >= replace_amount) {
             break;
         }
     }
@@ -161,11 +165,11 @@ void agent_t::doCrossover(double replace_ratio, double crossover_ratio) {
     std::vector<uint16_t> condition_mask_params;
     std::vector<double> variance_params;
 
-    alpha_params.reserve(elected_amount);
-    beta_params.reserve(elected_amount);
-    condition_params.reserve(elected_amount);
-    condition_mask_params.reserve(elected_amount);
-    variance_params.reserve(elected_amount);
+    alpha_params.reserve(replace_amount);
+    beta_params.reserve(replace_amount);
+    condition_params.reserve(replace_amount);
+    condition_mask_params.reserve(replace_amount);
+    variance_params.reserve(replace_amount);
 
     for(auto & pair : best_forecastors) {
         size_t index = pair.second;

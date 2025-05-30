@@ -7,10 +7,12 @@
 
 namespace py = pybind11;
 
-PYBIND11_MAKE_OPAQUE(std::vector<agent_t>)
+PYBIND11_MAKE_OPAQUE(std::vector<agent_t>);
+PYBIND11_MAKE_OPAQUE(std::vector<double>);
 
 PYBIND11_MODULE(market, m) {
      py::bind_vector<std::vector<agent_t>>(m, "AgentList");
+     py::bind_vector<std::vector<double>>(m, "VectorDouble");
     
      py::class_<market>(m, "market")
         .def(py::init<size_t, size_t>(), "Initialize forecastor with a specific amount of forecastors", 
@@ -29,5 +31,8 @@ PYBIND11_MODULE(market, m) {
         .def("putPrice", &market::putPrice)
         .def("informAgent", &market::informAgent)
         .def("setAgentVariance", &market::setAgentVariance, "Set the variance of the agent", py::arg("index"), py::arg("forecastor_index"), py::arg("value"))
-        .def_readwrite("agents", &market::agents);
+        .def_readwrite("agents", &market::agents)
+        .def("forward", &market::forward, "Forward the market state")
+        .def_readwrite("price", &market::price, "Price history of the market")
+        .def_readwrite("dividend", &market::dividend, "Dividend history of the market");
 }

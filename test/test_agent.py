@@ -132,8 +132,8 @@ def test_prediction():
 
     ref = coeff
 
-    ref.price_term =  (1.0 -1 - rate) / (risk_aversion * variance)
-    ref.div_term = (1.0) / (risk_aversion * variance)
+    ref.price_term =  (10.0 -1 - rate) / (risk_aversion * variance)
+    ref.div_term = (10.0) / (risk_aversion * variance)
     ref.constant = 0
 
     coeff = tar.getPrediction()

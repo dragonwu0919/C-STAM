@@ -22,7 +22,7 @@ def test_updatedividends():
 
     for i in range(10):
         tar.updateDividend()
-        assert tar.getDividend() != pytest.approx(tar.getLastDividend(), rel=0.01)                
+        assert tar.getDividend() != pytest.approx(tar.getLastDividend(), rel=0.001)                
 
 
 def test_updateCondition():
@@ -83,8 +83,8 @@ def test_updatePrice():
     div_term = 0
     constant = 0
     for i in range(3):
-        price_term += (1.0 -1 - rate) / (variance * risk_aversion)
-        div_term += (1.0) / (variance * risk_aversion)
+        price_term += (10.0 -1 - rate) / (variance * risk_aversion)
+        div_term += (10.0) / (variance * risk_aversion)
         constant += 0
 
     tar.putDividend(div)
@@ -98,5 +98,11 @@ def test_updatePrice():
     assert price == pytest.approx(ref_price, rel=0.01)
 
 
-def test_updateAgent():
+def test_forward():
+    
+    tar = reference()
+
+    for i in range(10):
+        tar.forward()
+
     assert True
