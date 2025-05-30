@@ -7,7 +7,7 @@ constexpr double DIV_AVG = 0.0;
 constexpr double DIV_VAR = 1.0;
 constexpr double INTREST_RATE = 0.05;
 constexpr double STOCK = 1000.0;
-constexpr double INIT_PRICE = 0.0;
+constexpr double INIT_PRICE = 100.0;
 
 class market {
 public:
@@ -45,6 +45,8 @@ public:
     void informAgent();
     
     void setAgentVariance(size_t, size_t, double );
+
+    void forward();
 
 
 
