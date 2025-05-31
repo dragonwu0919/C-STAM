@@ -31,6 +31,9 @@ public:
     
     size_t getAmount();
 
+    void refactorAlpha(double variance,double offset);
+    void refactorBeta(double variance,double offset);
+
     // constructor
     forecastor() = delete;
     forecastor(size_t amount) : amount(amount), alpha(amount, ALPHA_INIT), beta(amount, BETA_INIT), variance(amount, 1.0f), condition(amount, 0xFF), condition_any(amount, 0xFF)

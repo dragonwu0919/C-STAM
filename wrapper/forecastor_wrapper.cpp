@@ -35,5 +35,9 @@ PYBIND11_MODULE(forecastor, m) {
      .def_readwrite("ref_condition", &forecastor::ref_condition, "Reference condition for the forecastor")
      .def_readwrite("condition", &forecastor::condition)
      .def_readwrite("condition_any", &forecastor::condition_any)
-     .def_readwrite("amount", &forecastor::amount, "Amount of forecastors in the forecastor set");
+     .def_readwrite("amount", &forecastor::amount, "Amount of forecastors in the forecastor set")
+     .def("refactorAlpha", &forecastor::refactorAlpha, "Refactor the alpha values of the forecastor set",
+          py::arg("variance"), py::arg("offset"))
+     .def("refactorBeta", &forecastor::refactorBeta, "Refactor the beta values of the forecastor set",
+          py::arg("variance"), py::arg("offset"));
 }

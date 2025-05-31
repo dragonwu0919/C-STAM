@@ -23,7 +23,7 @@ public:
     double rate;
 
     double stock_hold = 0; // Amount of stock held by the agent
-    double wealth;
+    double wealth ;
     double saving = INIT_SAVING; // Initial saving amount
 
     double price = 0;
@@ -42,6 +42,11 @@ public:
     }
 
     double updateWealth() {
+        // update stock hold 
+        // Since h(t) = a*p(t) + b*d(t) + c, and p(t) is solved as new price,  we can use the new price and dividend to calculate the stock hold
+        stock_hold = pred_coeff.price_term * price + pred_coeff.div_term * last_dividend + pred_coeff.constant;
+        saving = wealth - stock_hold * price; // update saving
+        
         wealth = calculateWealth(rate, saving, stock_hold, price, dividend);
         return wealth;
     }
@@ -75,6 +80,7 @@ public:
     //constructor
     agent() = delete;
     agent(size_t amount, double rate) : fset(amount), rate(rate){
+        wealth = calculateWealth(rate, saving, stock_hold, 0.0f, 0.0f);
     }
 
 };
