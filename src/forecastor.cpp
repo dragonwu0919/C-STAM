@@ -1,4 +1,5 @@
 #include <forecastor.hpp>
+#include <random>
 
 void forecastor::setCondition(uint16_t condition) {
     this->ref_condition = condition;
@@ -50,4 +51,28 @@ void forecastor::setVariance(size_t index, double value) {
     }
     
     this->variance[index] = value;
+}
+
+void forecastor::refactorAlpha(double variance,double offset) {
+    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(- variance, variance);
+
+    this->alpha.resize(this->amount);
+    for (size_t i = 0; i < this->amount; i++) {
+        this->alpha[i] = dis(gen) + offset;
+    }
+}
+
+void forecastor::refactorBeta(double variance,double offset) {
+    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis( - variance, variance);
+
+    this->alpha.resize(this->amount);
+    for (size_t i = 0; i < this->amount; i++) {
+        this->beta[i] = dis(gen) + offset;
+    }
 }

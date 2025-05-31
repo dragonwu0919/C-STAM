@@ -159,6 +159,6 @@ def test_wealth():
 
         ref_wealth = wealth(r, s, h, price, div)
 
-        tar.updateWealth()
+        res = tar.calculateWealth(r, s, h, price, div)
 
-        assert tar.wealth == pytest.approx(ref_wealth, rel=0.01)
+        assert res == pytest.approx(ref_wealth, rel=0.01)
