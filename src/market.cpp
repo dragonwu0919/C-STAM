@@ -76,7 +76,8 @@ void market::updatePrice() {
     double price_temp = 0.0;
     price_temp = (stock - dividend_term*dividend.back() - constant) / (price_term);
 
-    this->price.push_back(price_temp);
+    if(price_temp <0) this->price.push_back(price.back());
+    else this->price.push_back(price_temp);
 }
 
 void market::updateAgent() {

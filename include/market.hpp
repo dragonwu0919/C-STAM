@@ -35,20 +35,16 @@ public:
 
     double getDividend();
     double getLastDividend();
-    void putDividend(double);
-
     double getInterestRate();
-
     double getPrice();
+    
+    void putDividend(double);
     void putPrice(double);
-
-    void informAgent();
     
     void setAgentVariance(size_t, size_t, double );
 
     void forward();
-
-
+    void informAgent();
 
     market() = delete;
     market(size_t agent_amount, size_t forecastor_amount) : agents(agent_amount, agent_t(forecastor_amount, interest_rate)), price(), dividend() {

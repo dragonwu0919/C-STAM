@@ -10,36 +10,35 @@ import market as m
 import matplotlib.pyplot as plt
 
 def simulate_market():
-    # 初始化 market
-    tar = m.market(agent_amount=5, forecastor_amount=10)
+    tar = m.market(agent_amount=5, forecastor_amount=5)
 
     for i in range(len(tar.agents)):
-        tar.agents[i].forecastor.refactorAlpha(1, 50)
+        tar.agents[i].forecastor.refactorAlpha(50, 100)
         tar.agents[i].forecastor.refactorBeta(.001, tar.getInterestRate())
 
-    # 設定初始股息
     tar.putDividend(1.0)
 
-    # 模擬 100 步的市場演進
-    steps = 100
+    steps = 1000
     agent_alpha = {j: [[] for _ in range(len(tar.agents[j].forecastor.alpha))] for j in range(len(tar.agents))}
     agent_beta = {j: [[] for _ in range(len(tar.agents[j].forecastor.beta))] for j in range(len(tar.agents))}
-    agent_wealth = {j: [] for j in range(len(tar.agents))}  # 初始化 wealth
+    agent_wealth = {j: [] for j in range(len(tar.agents))}  
 
+    print(f"Step {1}/{steps}", end="")
     for _ in range(steps):
-        tar.forward()  # 執行 forward 方法
+        tar.forward()  
+        print(f"\rStep {_ + 1}/{steps}", end="")
         for j in range(len(tar.agents)):
-            agent_wealth[j].append(tar.agents[j].wealth)  # 採集 wealth
+            agent_wealth[j].append(tar.agents[j].wealth) 
             for k in range(len(tar.agents[j].forecastor.alpha)):
-                agent_alpha[j][k].append(tar.agents[j].forecastor.alpha[k])  # 採集 alpha
+                agent_alpha[j][k].append(tar.agents[j].forecastor.alpha[k]) 
             for k in range(len(tar.agents[j].forecastor.beta)):
-                agent_beta[j][k].append(tar.agents[j].forecastor.beta[k])    # 採集 beta
+                agent_beta[j][k].append(tar.agents[j].forecastor.beta[k])    
 
-    prices = tar.price  # 直接使用 price history
+    print("")
+    prices = tar.price  
     return prices, agent_alpha, agent_beta, agent_wealth
 
 def visualize_prices_and_wealth(prices, agent_wealth):
-    # 可視化價格和 wealth 演進
     plt.figure(figsize=(12, 8))
 
     # Plot price evolution
@@ -62,10 +61,9 @@ def visualize_prices_and_wealth(prices, agent_wealth):
     plt.grid(True)
 
     plt.tight_layout()
-    plt.show(block=False)  # 非阻塞模式
+    plt.show(block=False)
 
 def visualize_agent_alpha_beta(agent_alpha, agent_beta):
-    # 統一顯示所有代理的 alpha 和 beta 演進
     num_agents = len(agent_alpha)
     fig, axes = plt.subplots(num_agents, 2, figsize=(12, 6 * num_agents))
 
@@ -90,13 +88,11 @@ def visualize_agent_alpha_beta(agent_alpha, agent_beta):
         axes[agent_id, 1].grid(True)
 
     plt.tight_layout()
-    plt.show(block=False)  # 非阻塞模式
+    plt.show(block=False)
 
 if __name__ == "__main__":
-    # 模擬市場並可視化
     prices, agent_alpha, agent_beta, agent_wealth = simulate_market()
-    visualize_prices_and_wealth(prices, agent_wealth)  # 顯示價格和 wealth 演進
-    visualize_agent_alpha_beta(agent_alpha, agent_beta)  # 顯示所有代理的 alpha 和 beta 演進
+    visualize_prices_and_wealth(prices, agent_wealth)  
+    visualize_agent_alpha_beta(agent_alpha, agent_beta)  
 
-    # 保持視窗開啟
     input("Press Enter to close all plots...")
